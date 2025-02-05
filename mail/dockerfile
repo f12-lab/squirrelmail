@@ -1,0 +1,26 @@
+FROM debian:bullseye
+
+RUN apt-get update && apt-get install -y \
+debconf \
+cron \
+dovecot-core \
+dovecot-imapd \
+mailutils \
+mutt
+RUN echo "postfix postfix/mailname string manuel.local" | debconf-set-selections
+RUN echo "postfix postfix/main_mailer_type string 'localhost'" | debconf-set-selections
+
+RUN apt-get install -y postfix
+
+RUN useradd -m -p '$1$74DwVVAy$6FwmhPYyVGeKB999en7I61' mengano && \
+    useradd -m -p '$1$8mn2mnKJ$axLiAO6ocmx2fT9MR1DSF1' fulano
+
+COPY postfixfiles/main.cf /etc/postfix/
+COPY dovecotfiles/10-auth.conf /etc/dovecot/conf.d/
+COPY dovecotfiles/10-mail.conf /etc/dovecot/conf.d/
+
+EXPOSE 25 143 587 993
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT [ "/entrypoint.sh" ]

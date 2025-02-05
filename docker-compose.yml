@@ -1,0 +1,26 @@
+services:
+  apache:
+    build:
+      context: ./apache/
+      dockerfile: dockerfile
+    container_name: apache
+    ports:
+      - "80:80"
+      - "9000:9000"
+    networks:
+      - net
+  mail:
+    build:
+      context: ./mail/
+      dockerfile: dockerfile
+    container_name: mail
+    ports:
+      - "25:25"
+      - "143:143"
+      - "587:587"
+      - "993:993"
+    networks:
+      - net
+networks:
+  net:
+    driver: bridge

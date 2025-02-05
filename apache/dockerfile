@@ -1,0 +1,30 @@
+FROM php:7.4-apache
+
+RUN apt-get update && apt-get install -y cron 
+
+COPY ./mail.conf /etc/apache2/sites-available/
+COPY php.ini /usr/local/etc/php/php.ini
+
+RUN mkdir /usr/local/mail/ 
+COPY ./squirrel/  /usr/local/mail/
+
+RUN chown -R www-data:www-data /usr/local/mail
+RUN chmod -R 755 /usr/local/mail
+
+RUN ln -sfn /usr/local/mail /var/www/mail
+RUN chown -R www-data:www-data /var/www/mail
+RUN chmod -R 755 /var/www/mail
+
+RUN mkdir -p /var/local/squirrelmail/data
+RUN chown www-data:www-data /var/local/squirrelmail/data
+RUN mkdir -p /var/local/squirrelmail/attach
+RUN chown www-data:www-data /var/local/squirrelmail/attach
+ 
+RUN chmod -R 755 /var/local/squirrelmail/data/ 
+RUN chmod -R 755 /var/local/squirrelmail/attach/
+
+EXPOSE 80 9000
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT [ "/entrypoint.sh" ]
