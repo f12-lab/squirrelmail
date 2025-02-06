@@ -5,13 +5,8 @@ RUN apt-get update && apt-get install -y cron
 COPY ./mail.conf /etc/apache2/sites-available/
 COPY php.ini /usr/local/etc/php/php.ini
 
-RUN mkdir /usr/local/mail/ 
-COPY ./squirrel/  /usr/local/mail/
+COPY ./squirrel/  /var/www/mail
 
-RUN chown -R www-data:www-data /usr/local/mail
-RUN chmod -R 755 /usr/local/mail
-
-RUN ln -sfn /usr/local/mail /var/www/mail
 RUN chown -R www-data:www-data /var/www/mail
 RUN chmod -R 755 /var/www/mail
 
@@ -23,7 +18,7 @@ RUN chown www-data:www-data /var/local/squirrelmail/attach
 RUN chmod -R 755 /var/local/squirrelmail/data/ 
 RUN chmod -R 755 /var/local/squirrelmail/attach/
 
-EXPOSE 80 9000
+EXPOSE 80
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

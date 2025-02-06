@@ -19,8 +19,6 @@ COPY postfixfiles/main.cf /etc/postfix/
 COPY dovecotfiles/10-auth.conf /etc/dovecot/conf.d/
 COPY dovecotfiles/10-mail.conf /etc/dovecot/conf.d/
 
-EXPOSE 25 143 587 993
-
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
