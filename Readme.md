@@ -1,6 +1,6 @@
 # Squirrelmail
 
-image::images/squirrel.png
+![Squirrel](images/squirrel.png)
 
 ## Estructura
 
